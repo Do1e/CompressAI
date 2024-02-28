@@ -27,8 +27,10 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from .net import net_optimizer
 from .net_aux import net_aux_optimizer
 
 __all__ = [
+    "net_optimizer",
     "net_aux_optimizer",
 ]

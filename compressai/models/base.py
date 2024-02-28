@@ -114,7 +114,7 @@ class CompressionModel(nn.Module):
 
         return nn.Module.load_state_dict(self, state_dict, strict=strict)
 
-    def update(self, scale_table=None, force=False):
+    def update(self, scale_table=None, force=False, update_quantiles: bool = False):
         """Updates EntropyBottleneck and GaussianConditional CDFs.
 
         Needs to be called once after training to be able to later perform the
@@ -125,6 +125,7 @@ class CompressionModel(nn.Module):
                 for initializing the Gaussian distributions
                 (default: 64 logarithmically spaced scales from 0.11 to 256)
             force (bool): overwrite previous values (default: False)
+            update_quantiles (bool): fast update quantiles (default: False)
 
         Returns:
             updated (bool): True if at least one of the modules was updated.
@@ -134,7 +135,7 @@ class CompressionModel(nn.Module):
         updated = False
         for _, module in self.named_modules():
             if isinstance(module, EntropyBottleneck):
-                updated |= module.update(force=force)
+                updated |= module.update(force=force, update_quantiles=update_quantiles)
             if isinstance(module, GaussianConditional):
                 updated |= module.update_scale_table(scale_table, force=force)
         return updated
@@ -185,6 +186,9 @@ class SimpleVAECompressionModel(CompressionModel):
     g_s: nn.Module
     latent_codec: LatentCodec
 
+    def __getitem__(self, key: str) -> LatentCodec:
+        return self.latent_codec[key]
+
     def forward(self, x):
         y = self.g_a(x)
         y_out = self.latent_codec(y)
@@ -200,8 +204,8 @@ class SimpleVAECompressionModel(CompressionModel):
         outputs = self.latent_codec.compress(y)
         return outputs
 
-    def decompress(self, strings, shape):
-        y_out = self.latent_codec.decompress(strings, shape)
+    def decompress(self, *args, **kwargs):
+        y_out = self.latent_codec.decompress(*args, **kwargs)
         y_hat = y_out["y_hat"]
         x_hat = self.g_s(y_hat).clamp_(0, 1)
         return {

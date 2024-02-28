@@ -41,7 +41,7 @@ from .torch import (
     register_optimizer,
     register_scheduler,
 )
-from .torchvision import TRANSFORMS
+from .transforms import TRANSFORMS, register_transform
 
 __all__ = [
     "CRITERIONS",
@@ -57,4 +57,5 @@ __all__ = [
     "register_module",
     "register_optimizer",
     "register_scheduler",
+    "register_transform",
 ]
