@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022, InterDigital Communications, Inc
+# Copyright (c) 2021-2024, InterDigital Communications, Inc
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@ from setuptools import find_packages, setup
 cwd = Path(__file__).resolve().parent
 
 package_name = "compressai"
-version = "1.2.5.dev0"
+version = "1.2.6.dev0"
 git_hash = "unknown"
 
 

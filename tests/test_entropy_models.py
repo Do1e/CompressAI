@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2022, InterDigital Communications, Inc
+# Copyright (c) 2021-2024, InterDigital Communications, Inc
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -61,7 +61,7 @@ class TestEntropyModel:
         assert ((y - x) >= -0.5).all()
         assert (y != torch.round(x)).any()
 
-    def test__quantize(self, entropy_model):
+    def test_quantize(self, entropy_model):
         x = torch.rand(1, 3, 4, 4)
         s = torch.rand(1).item()
         torch.manual_seed(s)
